@@ -7,6 +7,8 @@ import {
 } from 'class-validator';
 
 export class CreateProfileDto {
+  userId: string;
+
   @IsString()
   name: string;
 

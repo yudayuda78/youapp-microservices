@@ -16,8 +16,8 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @MessagePattern('createProfile')
-  createProfile(@Payload() dto: CreateProfileDto) {
-    return this.profileService.createProfile(dto);
+  createProfile(@Payload() data: { userId: string; dto: CreateProfileDto }) {
+    return this.profileService.createProfile(data.userId, data.dto);
   }
 
   // @Get('getProfile')

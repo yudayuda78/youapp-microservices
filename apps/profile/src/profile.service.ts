@@ -9,24 +9,24 @@ import { calculateZodiac } from './utils/zodiac';
 
 @Injectable()
 export class ProfileService {
-  // constructor(
-  //   @InjectModel(Profile.name)
-  //   private profileModel: Model<Profile>,
-  // ) {}
+  constructor(
+    @InjectModel(Profile.name)
+    private profileModel: Model<Profile>,
+  ) {}
 
-  createProfile(dto: CreateProfileDto) {
+  createProfile(userId: string, dto: CreateProfileDto) {
     const birthday = new Date(dto.birthday);
 
     const zodiac = calculateZodiac(birthday);
-    console.log({ zodiac });
-    // const { horoscope } = calculateHoroscope(birthday);
-    // return this.profileModel.create({
-    //   ...dto,
-    //   userId,
-    //   birthday,
-    //   zodiac,
-    //   horoscope,
-    // });
+    const horoscope = calculateHoroscope(birthday);
+
+    return this.profileModel.create({
+      ...dto,
+      userId,
+      birthday,
+      zodiac,
+      horoscope,
+    });
   }
 
   // getProfile(userId: string) {

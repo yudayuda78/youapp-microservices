@@ -10,8 +10,8 @@ export class ProfileController {
   @UseGuards(JwtAuthGuard)
   @Post('createProfile')
   createProfile(@Req() req, @Body() dto: CreateProfileDto) {
-    const user = req.user;
-    console.log(user);
-    // return this.profileService.createProfile(dto);
+    const userId = req.user.sub;
+
+    return this.profileService.createProfile(userId, dto);
   }
 }

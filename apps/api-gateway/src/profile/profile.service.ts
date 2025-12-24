@@ -6,7 +6,10 @@ import { ClientProxy } from '@nestjs/microservices';
 export class ProfileService {
   constructor(@Inject('PROFILE_SERVICE') private profileClient: ClientProxy) {}
 
-  createProfile(dto: CreateProfileDto) {
-    return this.profileClient.send('createProfile', dto);
+  createProfile(userId: string, dto: CreateProfileDto) {
+    return this.profileClient.send('createProfile', {
+      userId,
+      dto,
+    });
   }
 }
