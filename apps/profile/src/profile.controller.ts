@@ -20,13 +20,13 @@ export class ProfileController {
     return this.profileService.createProfile(data.userId, data.dto);
   }
 
-  // @Get('getProfile')
-  // getProfile(@Req() req) {
-  //   return this.profileService.getProfile(req.user.userId);
-  // }
+  @MessagePattern('getProfile')
+  getProfile(@Payload() data: { userId: string }) {
+    return this.profileService.getProfile(data.userId);
+  }
 
-  // @Put('updateProfile')
-  // updateProfile(@Req() req, @Body() dto: CreateProfileDto) {
-  //   return this.profileService.updateProfile(req.user.userId, dto);
-  // }
+  @MessagePattern('updateProfile')
+  updateProfile(@Payload() data: { userId: string; dto: CreateProfileDto }) {
+    return this.profileService.updateProfile(data.userId, data.dto);
+  }
 }

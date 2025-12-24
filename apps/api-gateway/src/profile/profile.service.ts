@@ -12,4 +12,15 @@ export class ProfileService {
       dto,
     });
   }
+
+  getProfile(userId: string) {
+    return this.profileClient.send('getProfile', { userId });
+  }
+
+  updateProfile(userId: string, dto: CreateProfileDto) {
+    return this.profileClient.send('updateProfile', {
+      userId,
+      dto,
+    });
+  }
 }

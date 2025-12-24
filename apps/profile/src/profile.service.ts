@@ -29,19 +29,37 @@ export class ProfileService {
     });
   }
 
-  // getProfile(userId: string) {
-  //   return this.profileModel.findOne({ userId });
-  // }
+  getProfile(userId: string) {
+    return this.profileModel.findOne({ userId });
+  }
 
-  // updateProfile(userId: string, dto: CreateProfileDto) {
-  //   const birthday = dto.birthday ? new Date(dto.birthday) : undefined;
+  async updateProfile(userId: string, dto: CreateProfileDto) {
+    // ambil profile lama
+    const profile = await this.profileModel.findOne({ userId });
+    if (!profile) throw new Error('Profile not found');
 
-  //   const zodiacData = birthday ? calculateZodiac(birthday) : {};
+    // pakai birthday baru kalau ada, kalau tidak pakai birthday lama
+    const birthday = dto.birthday ? new Date(dto.birthday) : profile.birthday;
 
-  //   return this.profileModel.findOneAndUpdate(
-  //     { userId },
-  //     { ...dto, ...zodiacData },
-  //     { new: true },
-  //   );
-  // }
+    // hitung ulang zodiac dan horoscope
+    const zodiacData = birthday ? calculateZodiac(birthday) : {};
+
+    const horoscopeData = birthday ? calculateHoroscope(birthday) : {};
+
+    console.log('Updating userId:', userId);
+    console.log('Update data:', { ...dto, zodiacData, horoscopeData });
+
+    // merge semua data dan update
+    const updatedProfile = await this.profileModel.findOneAndUpdate(
+      { userId },
+      {
+        ...dto,
+        zodiac: zodiacData, // gunakan nama field schema
+        horoscope: horoscopeData,
+      },
+      { new: true },
+    );
+
+    return updatedProfile;
+  }
 }
