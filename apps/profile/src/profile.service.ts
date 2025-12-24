@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Profile } from './profile.schema';
-import { calculateZodiac } from './utils/zodiac';
+
 import { calculateHoroscope } from './utils/horoscope';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Model } from 'mongoose';
+import { calculateZodiac } from './utils/zodiac';
 
 @Injectable()
 export class ProfileService {
@@ -13,12 +14,12 @@ export class ProfileService {
   //   private profileModel: Model<Profile>,
   // ) {}
 
-  createProfile(req) {
-    console.log(req);
-    // const birthday = new Date(dto.birthday);
-    // const { zodiac } = calculateZodiac(birthday);
-    // const { horoscope } = calculateHoroscope(birthday);
+  createProfile(dto: CreateProfileDto) {
+    const birthday = new Date(dto.birthday);
 
+    const zodiac = calculateZodiac(birthday);
+    console.log({ zodiac });
+    // const { horoscope } = calculateHoroscope(birthday);
     // return this.profileModel.create({
     //   ...dto,
     //   userId,

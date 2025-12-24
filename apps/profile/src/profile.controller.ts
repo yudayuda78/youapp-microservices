@@ -9,15 +9,15 @@ import {
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Post('createProfile')
-  createProfile(@Req() req, @Body() dto: CreateProfileDto) {
-    console.log(req.user.userId);
-    // this.profileService.createProfile(req.body.birthday);
+  @MessagePattern('createProfile')
+  createProfile(@Payload() dto: CreateProfileDto) {
+    return this.profileService.createProfile(dto);
   }
 
   // @Get('getProfile')
