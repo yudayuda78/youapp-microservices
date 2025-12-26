@@ -13,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
         name: 'AUTH_SERVICE',
         transport: Transport.TCP,
         options: {
+          host: 'auth',
           port: 3001,
         },
       },

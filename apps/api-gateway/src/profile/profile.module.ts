@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'PROFILE_SERVICE',
         transport: Transport.TCP,
         options: {
+          host: 'profile',
           port: 3002,
         },
       },

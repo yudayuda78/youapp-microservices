@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth
+    environment:
+      AUTH_HOST: auth
+      AUTH_PORT: 3001
+
+  auth:
+    build:
+      context: .
+      dockerfile: apps/auth/Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/auth-db
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  profile:
+    build:
+      context: .
+      dockerfile: apps/profile/Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - auth
+      - mongodb
+      - rabbitmq
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/profile-db
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  chat:
+    build:
+      context: .
+      dockerfile: apps/chat/Dockerfile
+    ports:
+      - "3003:3003"
+    depends_on:
+      - auth
+      - mongodb
+      - rabbitmq
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/chat-db
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # AMQP
+      - "15672:15672" # Dashboard
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  mongo-data:

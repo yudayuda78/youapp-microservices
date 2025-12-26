@@ -10,7 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'CHAT_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672'],
           queue: 'chat_queue',
           queueOptions: {
             durable: true,
